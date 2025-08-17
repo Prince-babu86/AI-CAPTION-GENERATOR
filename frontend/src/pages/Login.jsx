@@ -16,7 +16,7 @@ const navigate = useNavigate();
     // Add login logic here
 
    try {
-     let response = await axios.post("/auth/login", { username, password });
+     let response = await axios.post("/auth/login", { username, password } , {withCredentials: true });
      navigate("/"); // Redirect to home on successful login
     console.log(response.data, "Login response");
    } catch (error) {

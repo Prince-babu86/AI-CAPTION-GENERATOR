@@ -23,7 +23,7 @@ function SignupPage() {
     // Add signup logic here
 
    try {
-     let response = await axios.post("auth/register", { username, password });
+     let response = await axios.post("auth/register", { username, password } , {withCredentials: true });
      navigate("/")
     console.log(response.data);
    } catch (error) {
