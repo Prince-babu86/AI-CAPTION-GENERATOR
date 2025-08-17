@@ -1,7 +1,7 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import axios from "../axios/axios.config";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function SignupPage() {
   const [username, setUsername] = useState("");
@@ -9,8 +9,8 @@ function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const navigate = useNavigate()
-
+  const [loading, setLoading] = useState(false); // Loader for button
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -19,16 +19,20 @@ function SignupPage() {
       return;
     }
 
-    console.log("Username:", username, "Password:", password);
-    // Add signup logic here
-
-   try {
-     let response = await axios.post("auth/register", { username, password } , {withCredentials: true });
-     navigate("/")
-    console.log(response.data);
-   } catch (error) {
-    
-   }
+    setLoading(true); // Start loader
+    try {
+      const response = await axios.post(
+        "/auth/register",
+        { username, password },
+        { withCredentials: true }
+      );
+      console.log(response.data);
+      navigate("/login"); // Navigate to login after signup
+    } catch (error) {
+      console.log(error, "Signup error");
+    } finally {
+      setLoading(false); // Stop loader
+    }
   };
 
   return (
@@ -67,11 +71,7 @@ function SignupPage() {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-200"
               >
-                {showPassword ? (
-                  <EyeOff className="w-5 h-5" />
-                ) : (
-                  <Eye className="w-5 h-5" />
-                )}
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
             </div>
           </div>
@@ -93,11 +93,7 @@ function SignupPage() {
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-200"
               >
-                {showConfirmPassword ? (
-                  <EyeOff className="w-5 h-5" />
-                ) : (
-                  <Eye className="w-5 h-5" />
-                )}
+                {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
             </div>
           </div>
@@ -105,11 +101,51 @@ function SignupPage() {
           {/* Submit */}
           <button
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-500 py-2 rounded-lg font-semibold"
+            disabled={loading}
+            className={`w-full py-2 rounded-lg font-semibold ${
+              loading ? "bg-gray-600 cursor-not-allowed" : "bg-green-600 hover:bg-green-500"
+            }`}
           >
-            Sign Up
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg
+                  className="w-5 h-5 animate-spin text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8H4z"
+                  ></path>
+                </svg>
+                Signing Up...
+              </span>
+            ) : (
+              "Sign Up"
+            )}
           </button>
         </form>
+
+        {/* Login Link */}
+        <p className="mt-4 text-center text-gray-400">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-blue-500 hover:underline font-semibold"
+          >
+            Login
+          </Link>
+        </p>
       </div>
     </div>
   );
