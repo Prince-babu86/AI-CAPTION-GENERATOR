@@ -10,7 +10,7 @@ app.use(express.json());
 // Middleware to handle cookies
 app.use(cookieParser());
 app.use(cors({
-  origin: "http://localhost:5173", // your frontend URL
+  origin: "https://ai-caption-generator-ten.vercel.app", // your frontend URL
   credentials: true, // allow cookies
 }));
 
