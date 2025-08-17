@@ -10,7 +10,7 @@ function CaptionWithImage() {
   const [file, setFile] = useState(null);
   const chatEndRef = useRef(null);
   const fileInputRef = useRef(null);
-  const [username, setusername] = useState("Guest");
+  const [username, setUsername] = useState("Guest");
 
   const navigate = useNavigate();
 
@@ -58,7 +58,7 @@ function CaptionWithImage() {
     const fetchUsername = async () => {
       try {
         const response = await axios.get("/auth/user", { withCredentials: true });
-        setusername(response.data.user.username || "Guest");
+        setUsername(response.data.user.username || "Guest");
       } catch (error) {
         console.error("Error fetching username:", error);
       }
@@ -102,7 +102,7 @@ function CaptionWithImage() {
   }, [messages, loading]);
 
   return (
-    <div className="scoller h-screen w-screen bg-gray-950 text-white overflow-x-hidden flex flex-col">
+    <div className="h-screen w-screen bg-gray-950 text-white flex flex-col overflow-x-hidden">
       <div className="flex flex-col flex-1 bg-gray-900 border border-gray-800">
         {/* Header */}
         <div className="px-4 py-3 border-b border-gray-800 text-lg font-semibold sticky top-0 bg-gray-900 z-10">
@@ -110,9 +110,9 @@ function CaptionWithImage() {
         </div>
 
         {/* Chat Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-6 flex flex-col">
+        <div className="flex-1 overflow-y-auto p-4 flex flex-col justify-center items-center">
           {messages.length === 0 ? (
-            <div className="text-center mt-10">
+            <div className="text-center">
               <h1 className="text-3xl sm:text-4xl font-extrabold tracking-wide bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
                 Welcome, {username}! 👋
               </h1>
