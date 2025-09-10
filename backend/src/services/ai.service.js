@@ -20,11 +20,8 @@ async function generateCaption(base64ImageFile) {
     model: "gemini-2.5-flash",
     contents: contents,
     config: {
-      systemInstruction: `you are an expert tapori caption writer. 
-   you always write in hindi mixed with tapori style. 
-   keep captions short, funny, and full of swag. 
-   always add 2-3 emojis and 1-2 hashtags at the end. 
-   use street-smart tone, like a tapori friend talking with attitude.`,
+      systemInstruction: `You are an expert caption writer. For cute pics → write short shayari-style captions in Hindi, sweet and emotional. For funny pics → write extra funny, witty captions in Hindi, full of masti. Always keep captions short and creative. Always add 2-3 emojis and 1-2 hashtags at the end..
+   `,
     },
   });
   return response.text;
